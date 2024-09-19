@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Produtos</title>
+    <link rel="stylesheet" href="/gerenciarProdutos.css">
+</head>
+<body>
+    <div class="container">
+        <div class="top-left">
+            <a href="/menu"><button class="btn">Voltar</button></a>
+        </div>
+        <div class="top-right">
+            <a href="/produtos/novo"><button class="btn">Adicionar Produto</button></a>
+        </div>
+        <h1>Lista de Produtos</h1>
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Valor</th>
+                    <th>Estoque</th>
+                    <th>Categoria</th>
+                    <th>Fornecedor</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="produto : ${produtos}">
+                    <td th:text="${produto.nome}"></td>
+                    <td th:text="${#numbers.formatDecimal(produto.valorCompra, 2, 'COMMA', 2, 'POINT')}"></td>
+                    <td th:text="${produto.estoque}"></td>
+                    <td th:text="${produto.categoriaNome}"></td>
+                    <td th:text="${produto.fornecedorNome}"></td>
+                    <td>
+                        <a th:href="@{/produtos/update/{id}(id=${produto.id})}">
+                            <button class="btn">Atualizar</button>
+                        </a>
+                        <form th:action="@{/produtos/delete/{id}(id=${produto.id})}" method="post" style="display:inline;">
+                            <button type="submit" class="btn delete" onclick="return confirm('Tem certeza que deseja deletar este produto?');">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+/* Estilização simples para o layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.menu {
+    background-color: #333;
+    padding: 10px;
+}
+
+.manage-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.manage-button:hover {
+    background-color: #45a049;
+}
+
+.listagem-container {
+    padding: 20px;
+    text-align: center;
+}
+
+select {
+    padding: 10px;
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+.quadro {
+    border: 1px solid #ccc;
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+    min-height: 100px;
+}

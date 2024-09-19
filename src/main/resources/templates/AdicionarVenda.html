@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Produto</title>
+    <link rel="stylesheet" href="/AdicionarVenda.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>Adicionar Produto</h1>
+        <form action="/produtos" method="POST">
+            <label for="nome">Nome do Produto:</label>
+            <input type="text" id="nome" name="nome" required>
+            
+            <label for="valorCompra">Valor de Compra:</label>
+            <input type="number" step="0.01" id="valorCompra" name="valorCompra" required>
+            
+            <label for="estoque">Estoque:</label>
+            <input type="number" id="estoque" name="estoque" min="0" required>
+            
+            <label for="categoria">Categoria:</label>
+            <select id="categoria" name="categoria.id" required>
+                <option value="">Selecione uma Categoria</option>
+                <th:block th:each="categoria : ${categorias}">
+                    <option th:value="${categoria.id}" th:text="${categoria.nome}"></option>
+                </th:block>
+            </select>
+            
+            <label for="fornecedor">Fornecedor:</label>
+            <select id="fornecedor" name="fornecedor.id" required>
+                <option value="">Selecione um Fornecedor</option>
+                <th:block th:each="fornecedor : ${fornecedores}">
+                    <option th:value="${fornecedor.id}" th:text="${fornecedor.nome}"></option>
+                </th:block>
+            </select>
+            
+            <button type="submit">Salvar Produto</button>
+        </form>
+        
+        <a href="/produtos/listar" class="btn">Voltar</a>
+    </div>
+</body>
+</html>

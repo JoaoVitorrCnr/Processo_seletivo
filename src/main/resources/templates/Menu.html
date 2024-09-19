@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu de Listagem</title>
+    <link rel="stylesheet" href="/Menu.css">
+</head>
+<body>
+    <div class="menu">
+        <button class="manage-button" onclick="window.location.href='/produtos/listar'">Gerenciar Produtos</button>
+    </div>
+
+    <div class="listagem-container">
+        <h2>Modos de Listagem</h2>
+        <select id="listagem-opcoes" onchange="atualizarListagem()">
+            <option value="">Selecione uma Opção</option>
+            <option value="categorias-produtos">Listagem das Categorias e Quantidade de Produtos em Estoque</option>
+            <option value="produtos-faltando">Listagem de Produtos Faltando em Estoque</option>
+            <option value="fornecedores-faltando">Listagem de Fornecedores com Produtos Faltando em Estoque</option>
+        </select>
+        
+        <div id="listagem-quadro" class="quadro">
+            <p>Selecione uma opção de listagem para exibir as informações.</p>
+        </div>
+    </div>
+
+    <script>
+        function atualizarListagem() {
+            const listagemQuadro = document.getElementById("listagem-quadro");
+            const opcaoSelecionada = document.getElementById("listagem-opcoes").value;
+
+            if (!opcaoSelecionada) {
+                listagemQuadro.innerHTML = "<p>Selecione uma opção para exibir as informações.</p>";
+                return;
+            }
+
+            fetch(`/listagem/${opcaoSelecionada}`)
+                .then(response => response.json())
+                .then(data => {
+                    let htmlContent = '';
+
+                    if (opcaoSelecionada === "categorias-produtos") {
+                        htmlContent = `
+                            <h3>Listagem das Categorias e Quantidade de Produtos em Estoque</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Categoria</th>
+                                        <th>Quantidade Total de Produtos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.map(item => `
+                                        <tr>
+                                            <td>${item[0]}</td>
+                                            <td>${item[1]}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        `;
+                    } else if (opcaoSelecionada === "produtos-faltando") {
+                        htmlContent = `
+                            <h3>Listagem de Produtos Faltando em Estoque</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Produto</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.map(item => `
+                                        <tr>
+                                            <td>${item.nome}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        `;
+                    } else if (opcaoSelecionada === "fornecedores-faltando") {
+                        htmlContent = `
+                            <h3>Listagem de Fornecedores com Produtos Faltando em Estoque</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Fornecedor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.map(item => `
+                                        <tr>
+                                            <td>${item.nome}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        `;
+                    }
+
+                    listagemQuadro.innerHTML = htmlContent;
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar dados:', error);
+                    listagemQuadro.innerHTML = '<p>Erro ao carregar dados.</p>';
+                });
+        }
+    </script>
+</body>
+</html>
